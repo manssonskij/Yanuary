@@ -11,7 +11,8 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 
 public class Vegetation {
-	ArrayList<Circle> treeArrayList;
+	private ArrayList<Circle> treeArrayList;
+
 	public void addTrees(Pane root) {
 
 		// kanske borde göras till LinkedList
@@ -36,6 +37,7 @@ public class Vegetation {
 			treeArrayList.add(tree);
 			root.getChildren().add(tree);
 		}
+		//debugging purpose
 		System.out.println("Trees: " + treeArrayList.size());
 
 		Iterator<Circle> iterator = treeArrayList.iterator();
@@ -44,6 +46,11 @@ public class Vegetation {
 			System.out.println("Tree position, X:" + tree.getCenterX() + " Y:" + tree.getCenterY());
 		}
 
+	}
+
+	//simple modifiable getter for arraylist
+	public ArrayList<Circle> getTreeList() {
+		return treeArrayList;
 	}
 
 }

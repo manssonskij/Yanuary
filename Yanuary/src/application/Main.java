@@ -7,6 +7,7 @@ import javafx.animation.AnimationTimer;
 import javafx.animation.StrokeTransition;
 import javafx.animation.Timeline;
 import javafx.application.Application;
+import javafx.geometry.Point2D;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import javafx.scene.Cursor;
@@ -15,7 +16,6 @@ import javafx.scene.Scene;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.effect.SepiaTone;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
@@ -47,31 +47,25 @@ public class Main extends Application {
 			primaryStage.setFullScreen(true);
 			scene.setCursor(Cursor.CROSSHAIR);
 
-			SepiaTone sepiaTone = new SepiaTone();
-			sepiaTone.setLevel(0.7);
-
-			// root.setEffect(sepiaTone);
-
 			// add background and gridlines
 			addBackground(root);
 			// addGrid(root);
-			// lets add some fake trees and houses
+
 			Vegetation vegetation =new Vegetation();
-			vegetation.addTrees(root);
+			vegetation.addTrees(root); // adding trees
+			treeArrayList = vegetation.getTreeList();
 			Buildings buildings=new Buildings();
-			buildings.addBuildings(root);
+			buildings.addBuildings(root); // adding buildings
 
 			Antagonist antagonist = new Antagonist();
-			antagonist.addAntagonist(root);
-			addProtagonist(root);
+			antagonist.addAntagonist(root); // adding enemies
+			addProtagonist(root); // adding player
 
 			startTimer();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
-
-
 
 	private void startTimer() {
 		animTimer.start();
@@ -82,19 +76,6 @@ public class Main extends Application {
 		launch(args);
 	}
 
-
-
-	private void collisionDetection() {
-
-		for (Iterator<Circle> iterator = treeArrayList.iterator(); iterator.hasNext();) {
-			Circle tree = (Circle) iterator.next();
-			if (protagonist.getBoundsInParent().intersects(tree.getBoundsInLocal())) {
-				System.out.println("collision at " + tree.getBoundsInLocal());
-				tree.setVisible(false);
-			}
-
-		}
-	}
 	private void addProtagonist(AnchorPane root) {
 
 		protagonist = new Group();
@@ -139,23 +120,27 @@ public class Main extends Application {
 		addStatusBox(root, protagonist);
 
 		protagonist.requestFocus();
-
-		addControlls(root, protagonist);
+		Controls controls= new Controls();
+		controls.addControlls(root, protagonist);
 		// addTurretController(root, turret, foobarTurret);
 		root.setOnMouseMoved(e -> {
 
+			Point2D turretpoint = new Point2D(turret.getCenterX(), turret.getCenterY());
+			Point2D aimingpoint = new Point2D(e.getX(), e.getY());
 			barrel.setRotate(0);
-			double difX = e.getY() - turret.getCenterY();
-			double difY = e.getX() - turret.getCenterX();
+			//double difX = e.getY() - turret.getCenterY();
+			//double difY = e.getX() - turret.getCenterX();
+			//turretpoint.angle(aimingpoint);
+			barrel.getTransforms().add((new Rotate(Math.toRadians(turretpoint.angle(aimingpoint)), 25,30)));
 
-			double angleRad = Math.atan2(difX, difY);
-			double angle = 90.0 - Math.toDegrees(angleRad);
-			double angleToRotate = Math.toDegrees(
-					Math.atan2((turret.getCenterY() - e.getY()), (turret.getCenterX() - e.getX()) - Math.PI / 2));
+			//double angleRad = Math.atan2(difX, difY);
+			//double angle = 90.0 - Math.toDegrees(angleRad);
+			//double angleToRotate = Math.toDegrees(
+			//		Math.atan2((turret.getCenterY() - e.getY()), (turret.getCenterX() - e.getX()) - Math.PI / 2));
 
-			System.out.println(angleToRotate);
+			//System.out.println(angleToRotate);
 
-			barrel.getTransforms().add(new Rotate(angle, 25, 30));
+			//barrel.getTransforms().add(new Rotate(angle, 25, 30));
 		});
 
 	}
@@ -173,78 +158,6 @@ public class Main extends Application {
 			foobarTurret.getTransforms().add(new Rotate(angleToRotate, 25, 30));
 
 		});
-
-	}
-
-	private void addControlls(Pane root, Group protagonist) {
-
-		protagonist.setOnKeyPressed(e -> {
-			switch (e.getCode()) {
-			case LEFT:
-				protagonist.setTranslateX(protagonist.getTranslateX() - 10);
-				break;
-			case UP:
-				// protagonist.setTranslateY(protagonist.getTranslateY() - 10);
-				moveForward(protagonist);
-
-				break;
-			case DOWN:
-				moveBackwards(protagonist);
-				// protagonist.setTranslateY(protagonist.getTranslateY() + 10);
-				break;
-			case RIGHT:
-				protagonist.setTranslateX(protagonist.getTranslateX() + 10);
-				break;
-			case A:
-				protagonist.setRotate(protagonist.getRotate() - 10);
-				break;
-			case W:
-				moveForward(protagonist);
-				//protagonist.setTranslateY(protagonist.getTranslateY());
-				break;
-			case D:
-				protagonist.setRotate(protagonist.getRotate() + 10);
-				break;
-			case S:
-				moveBackwards(protagonist);
-				//protagonist.setTranslateY(protagonist.getTranslateY() + 10);
-				break;
-			default:
-				break;
-			}
-			collisionDetection();
-
-		});
-
-		// ACTION EVENT SECTiON
-		root.setOnMousePressed(e -> {
-			shootBullet(protagonist, root, e);
-		});
-
-	}
-
-	private void moveBackwards(Group agent) {
-		double angle = Math.toRadians(agent.getRotate());
-		System.out.println(angle);
-		double newX = Math.sin(angle) * 10;
-		double newY = Math.cos(angle) * 10;
-		System.out.println(newX + " " + newY);
-		double novoX = agent.getTranslateX() - newX;
-		double novoY = agent.getTranslateY() - newY;
-		agent.setTranslateX(novoX);
-		agent.setTranslateY(novoY);
-
-	}
-
-	private void moveForward(Group agent) {
-
-		double angle = Math.toRadians(agent.getRotate());
-		System.out.println(angle);
-		double newX = Math.sin(angle) * 10;
-		double newY = Math.cos(angle) * 10;
-		System.out.println(newX + " " + newY);
-		agent.setTranslateX(agent.getTranslateX() - newX);
-		agent.setTranslateY(agent.getTranslateY() - newY);
 
 	}
 
@@ -267,30 +180,7 @@ public class Main extends Application {
 
 	}
 
-	private void shootBullet(Group protagonist, Pane root, MouseEvent e) {
-		Circle bullet = new Circle(10);
-		bullet.setFill(Color.BROWN);
-		bullet.setCenterX((double) e.getX());
-		bullet.setCenterY((double) e.getY());
-		protagonist.getRotate();
 
-		bullet.setFill(Color.YELLOW);
-		bullet.setStroke(Color.YELLOW);
-		bullet.setStrokeWidth(4);
-
-		root.getChildren().add(bullet);
-
-		// copnpaste - check if can be fun for something
-		StrokeTransition st = new StrokeTransition();
-		st.setShape(bullet);
-		st.setDuration(new Duration(2000));
-		st.setToValue(Color.ORANGE);
-		st.setCycleCount(Timeline.INDEFINITE);
-		st.setAutoReverse(true);
-		st.play();
-		// root.getChildren().remove(bullet);
-
-	}
 /*
 	private void addBuildings(Pane root) {
 
