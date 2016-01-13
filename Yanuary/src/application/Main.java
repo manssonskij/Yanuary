@@ -30,7 +30,7 @@ public class Main extends Application {
 
 	// panzer protagonist
 	ArrayList<Circle> treeArrayList;
-	ArrayList<Rectangle> buildingArrayList;
+	//ArrayList<Rectangle> buildingArrayList;
 	ArrayList<Group> antagonistArrayList;
 	Group protagonist;
 
@@ -56,10 +56,13 @@ public class Main extends Application {
 			addBackground(root);
 			// addGrid(root);
 			// lets add some fake trees and houses
-			addTrees(root);
-			addBuildings(root);
+			Vegetation vegetation =new Vegetation();
+			vegetation.addTrees(root);
+			Buildings buildings=new Buildings();
+			buildings.addBuildings(root);
 
-			addAntagonist(root);
+			Antagonist antagonist = new Antagonist();
+			antagonist.addAntagonist(root);
 			addProtagonist(root);
 
 			startTimer();
@@ -68,51 +71,18 @@ public class Main extends Application {
 		}
 	}
 
-	private void addAntagonist(AnchorPane root) {
 
-		antagonistArrayList = new ArrayList<Group>();
-		Random rand = new Random();
-		int noEnemy = rand.nextInt(8 - 2) + 2;
-		for (int i = 0; i < noEnemy; i++) {
 
-			Group antagonist = new Group();
-			Rectangle chassi = new Rectangle(50, 80);
-			chassi.setFill(Color.DARKOLIVEGREEN);
-			chassi.setStroke(Color.BLACK);
-			Circle turret = new Circle(25, 30, 10);
-			turret.setFill(Color.DARKGREEN);
-			turret.setStroke(Color.BLACK);
-			Rectangle hatch = new Rectangle(20, 50, 20, 10);
-			hatch.setFill(Color.DARKOLIVEGREEN);
-			hatch.setStroke(Color.BLACK);
-
-			Line barrel = new Line(25, 30, 25, 10);
-			System.out.println(barrel.getEndX() + " " + barrel.getEndY());
-			barrel.setStrokeWidth(4);
-			barrel.setFill(Color.DEEPSKYBLUE);
-			barrel.setTranslateX(antagonist.getTranslateX());
-			barrel.setTranslateY(antagonist.getTranslateY());
-
-			antagonist.getChildren().addAll(chassi, turret, hatch, barrel);
-			antagonistArrayList.add(antagonist);
-
-			int randomPosY = rand.nextInt((int) root.getHeight() - 200);
-			int randomPosX = rand.nextInt((int) root.getWidth() - 200);
-			antagonist.setTranslateX(randomPosX);
-			antagonist.setTranslateY(randomPosY);
-			root.getChildren().add(antagonist);
-		}
-		System.out.println("Buildings: " + antagonistArrayList.size());
-
-		// implementera någon form av iterator
-		Iterator<Group> iterator = antagonistArrayList.iterator();
-		while (iterator.hasNext()) {
-			Group antagonist = iterator.next();
-			System.out
-					.println("Building position, X:" + antagonist.getTranslateX() + " Y:" + antagonist.getTranslateY());
-		}
+	private void startTimer() {
+		animTimer.start();
 
 	}
+
+	public static void main(String[] args) {
+		launch(args);
+	}
+
+
 
 	private void collisionDetection() {
 
@@ -125,16 +95,6 @@ public class Main extends Application {
 
 		}
 	}
-
-	private void startTimer() {
-		animTimer.start();
-
-	}
-
-	public static void main(String[] args) {
-		launch(args);
-	}
-
 	private void addProtagonist(AnchorPane root) {
 
 		protagonist = new Group();
@@ -331,7 +291,7 @@ public class Main extends Application {
 		// root.getChildren().remove(bullet);
 
 	}
-
+/*
 	private void addBuildings(Pane root) {
 
 		buildingArrayList = new ArrayList<Rectangle>();
@@ -358,7 +318,8 @@ public class Main extends Application {
 		}
 
 	}
-
+*/
+	/*
 	private void addTrees(Pane root) {
 
 		// kanske borde göras till LinkedList
@@ -392,6 +353,7 @@ public class Main extends Application {
 		}
 
 	}
+	*/
 
 	private void addBackground(Pane root) {
 		Rectangle background = new Rectangle();
