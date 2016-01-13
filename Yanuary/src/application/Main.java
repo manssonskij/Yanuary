@@ -8,8 +8,10 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 
 public class Main extends Application {
+
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -32,56 +34,77 @@ public class Main extends Application {
 	}
 
 	public void addAntagonist(Pane root) {
-		Circle circle = new Circle();
-		circle.setCenterX(root.getWidth() / 2);
-		circle.setCenterY(root.getHeight() / 2);
-		circle.setRadius(50);
-		circle.setFill(Color.BISQUE);
+		Rectangle agent = new Rectangle();
+		agent.setWidth(40);
+		agent.setHeight(80);
+		agent.setTranslateX(root.getWidth() / 2);
+		agent.setTranslateY(root.getHeight() / 2);
+		agent.setFill(Color.DARKGREEN);
 
 		root.requestFocus();
-		
-		Point2D coordinate = new Point2D(0, 0);
-
 
 		root.setOnMouseClicked(e -> {
-			circle.setCenterX(e.getSceneX());
-			circle.setCenterY(e.getSceneY());
-			coordinate.add(e.getSceneX(),e.getSceneY());
+			agent.setTranslateX(e.getSceneX());
+			agent.setTranslateY(e.getSceneY());
 		});
-		
-		root.getChildren().add(circle);
 
-		double angle = circle.getRotate();
+		root.getChildren().add(agent);
+		// Point2D agentlocation = new Point2D(agent.getTranslateX(),
+		// agent.getTranslateY());
+		// Point2D agentdirection;
 
-		Point2D coord1 = new Point2D(circle.getCenterX(), circle.getCenterY());
-		Point2D newPosition= new Point2D(circle.getCenterX(), circle.getCenterY());
-		newPosition.angle(coordinate);
-		
-		
+		double angle = Math.toDegrees(agent.getRotate());
+
+		double newX = Math.sin(angle) * 10;
+		double newY = Math.cos(angle) * 10;
+
+		// agentdirection = agentlocation
+		// double angle = Math.toDegrees(agent.getRotate());
 		root.setOnKeyPressed(e -> {
-			//Point2D coord2 =new Point2D(e.ge);
+
 			switch (e.getCode()) {
-			case UP:
-				circle.setCenterY(circle.getCenterY() - 10);
-				//circle.setCenterY(Math.atan(angle));
-				circle.setCenterX(newPosition.getX());
-				circle.setCenterY(newPosition.getY());
-				
+			case UP: {
+				moveForward(agent);
+			}
 				break;
 			case DOWN:
-				circle.setCenterY(circle.getCenterY() + 10);
+				moveBackwards(agent);
+
 				break;
 			case LEFT:
-				circle.setCenterX(circle.getCenterX() - 10);
-				circle.setRotate(-10);
+				agent.setRotate(agent.getRotate() - 10);
 				break;
 			case RIGHT:
-				circle.setCenterX(circle.getCenterX() + 10);
-				circle.setRotate(+10);
+				agent.setRotate(agent.getRotate() + 10);
 				break;
 			default:
 				break;
 			}
 		});
+	}
+
+	private void moveBackwards(Rectangle agent) {
+		double angle = Math.toRadians(agent.getRotate());
+		System.out.println(angle);
+		double newX = Math.sin(angle) * 10;
+		double newY = Math.cos(angle) * 10;
+		System.out.println(newX + " " + newY);
+		double novoX= agent.getTranslateX()-newX;
+		double novoY = agent.getTranslateY()-newY;
+		agent.setTranslateX(novoX);
+		agent.setTranslateY(novoY);
+		
+	}
+
+	private void moveForward(Rectangle agent) {
+
+		double angle = Math.toRadians(agent.getRotate());
+		System.out.println(angle);
+		double newX = Math.sin(angle) * 10;
+		double newY = Math.cos(angle) * 10;
+		System.out.println(newX + " " + newY);
+		agent.setTranslateX(agent.getTranslateX() - newX);
+		agent.setTranslateY(agent.getTranslateY() - newY);
+
 	}
 }
