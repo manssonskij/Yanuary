@@ -59,7 +59,7 @@ public class Main extends Application {
 
 			Antagonist antagonist = new Antagonist();
 			antagonist.addAntagonist(root); // adding enemies
-			addProtagonist(root); // adding player
+			//addProtagonist(root); // adding player
 
 			startTimer();
 		} catch (Exception e) {
@@ -125,13 +125,17 @@ public class Main extends Application {
 		// addTurretController(root, turret, foobarTurret);
 		root.setOnMouseMoved(e -> {
 
+			Point2D protapoint= new Point2D(protagonist.getTranslateX(), protagonist.getTranslateY());
 			Point2D turretpoint = new Point2D(turret.getCenterX(), turret.getCenterY());
-			Point2D aimingpoint = new Point2D(e.getX(), e.getY());
-			barrel.setRotate(0);
+			Point2D aimingpoint = new Point2D(e.getSceneX(), e.getSceneY());
+			System.out.println(protapoint.toString() + " turret and aim "+ aimingpoint.toString());
+			barrel.setRotate(Math.toDegrees(Math.atan2(protapoint.getY() - aimingpoint.getY(),  protapoint.getX() - aimingpoint.getX())));
 			//double difX = e.getY() - turret.getCenterY();
 			//double difY = e.getX() - turret.getCenterX();
 			//turretpoint.angle(aimingpoint);
-			barrel.getTransforms().add((new Rotate(Math.toRadians(turretpoint.angle(aimingpoint)), 25,30)));
+			//barrel.endXProperty().bind(e.getSceneX());
+			//barrel.getTransforms().add(new Rotate(Math.toDegrees(Math.atan2(protapoint.getY() - aimingpoint.getY(),  protapoint.getX() - aimingpoint.getX())),25,30));
+			//barrel.getTransforms().add((new Rotate(Math.toDegrees(protapoint.angle(aimingpoint)), 25,30)));
 
 			//double angleRad = Math.atan2(difX, difY);
 			//double angle = 90.0 - Math.toDegrees(angleRad);
@@ -180,70 +184,6 @@ public class Main extends Application {
 
 	}
 
-
-/*
-	private void addBuildings(Pane root) {
-
-		buildingArrayList = new ArrayList<Rectangle>();
-		Random rand = new Random();
-		int noBuild = rand.nextInt(10 - 2) + 2;
-		for (int i = 0; i < noBuild; i++) {
-			int randomPosY = rand.nextInt((int) root.getHeight() - 200);
-			int randomPosX = rand.nextInt((int) root.getWidth() - 200);
-
-			Rectangle building = new Rectangle(randomPosY, randomPosX, rand.nextInt(200 - 100) + 100,
-					rand.nextInt(200 - 100) + 100);
-			building.setFill(Color.FIREBRICK);
-			building.setStroke(Color.BLACK);
-			buildingArrayList.add(building);
-			root.getChildren().add(building);
-		}
-		System.out.println("Buildings: " + buildingArrayList.size());
-
-		// implementera någon form av iterator
-		Iterator<Rectangle> iterator = buildingArrayList.iterator();
-		while (iterator.hasNext()) {
-			Rectangle building = iterator.next();
-			System.out.println("Building position, X:" + building.getX() + " Y:" + building.getY());
-		}
-
-	}
-*/
-	/*
-	private void addTrees(Pane root) {
-
-		// kanske borde göras till LinkedList
-		DropShadow ds = new DropShadow();
-		ds.blurTypeProperty();
-		ds.setBlurType(BlurType.ONE_PASS_BOX);
-		ds.setOffsetX(3);
-		ds.setOffsetY(3);
-
-		treeArrayList = new ArrayList<Circle>();
-		Random rand = new Random();
-		int noTrees = rand.nextInt(80 - 30) + 30;
-		for (int i = 0; i < noTrees; i++) {
-			int treeSize = rand.nextInt(20 - 5) + 5;
-			Circle tree = new Circle(treeSize, Color.FORESTGREEN);
-			int randX = rand.nextInt((int) root.getWidth());
-			int randY = rand.nextInt((int) root.getHeight());
-			// Circle tree = new Circle(10, Color.FORESTGREEN);
-			tree.setCenterX(randX);
-			tree.setCenterY(randY);
-			// tree.setEffect(ds);
-			treeArrayList.add(tree);
-			root.getChildren().add(tree);
-		}
-		System.out.println("Trees: " + treeArrayList.size());
-
-		Iterator<Circle> iterator = treeArrayList.iterator();
-		while (iterator.hasNext()) {
-			Circle tree = iterator.next();
-			System.out.println("Tree position, X:" + tree.getCenterX() + " Y:" + tree.getCenterY());
-		}
-
-	}
-	*/
 
 	private void addBackground(Pane root) {
 		Rectangle background = new Rectangle();
