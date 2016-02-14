@@ -16,15 +16,16 @@ public class Vegetation {
 	public void addTrees(Pane root) {
 
 		// kanske borde göras till LinkedList
-		DropShadow ds = new DropShadow();
-		ds.blurTypeProperty();
-		ds.setBlurType(BlurType.ONE_PASS_BOX);
-		ds.setOffsetX(3);
-		ds.setOffsetY(3);
+		//DropShadow ds = new DropShadow();
+		//ds.blurTypeProperty();
+		//ds.setBlurType(BlurType.ONE_PASS_BOX);
+		//ds.setOffsetX(3);
+		//ds.setOffsetY(3);
 
 		treeArrayList = new ArrayList<Circle>();
 		Random rand = new Random();
 		int noTrees = rand.nextInt(80 - 30) + 30;
+		
 		for (int i = 0; i < noTrees; i++) {
 			int treeSize = rand.nextInt(20 - 5) + 5;
 			Circle tree = new Circle(treeSize, Color.FORESTGREEN);

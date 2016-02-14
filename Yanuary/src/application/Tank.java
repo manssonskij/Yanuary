@@ -4,19 +4,19 @@ import javafx.scene.Group;
 import javafx.scene.effect.BlurType;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.effect.InnerShadow;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 public class Tank extends Vehicle {
+	AnchorPane root;
 	
 	public Tank(){
-		super();
 	}
 	
-	public Group createTank(Pane root){
+	public Group createTank(AnchorPane root){
 		Group tank = new Group();
 		Rectangle chassi = new Rectangle(50, 80);
 		chassi.setFill(Color.DARKOLIVEGREEN);

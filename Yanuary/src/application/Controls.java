@@ -13,27 +13,31 @@ public class Controls {
 		Bullets bullet = new Bullets();
 
 		protagonist.setOnKeyPressed(e -> {
+			
+			
+			// WASD moves relative, ARROWS direct
 			switch (e.getCode()) {
 			case LEFT:
-				protagonist.setTranslateX(protagonist.getTranslateX() - 10);
+				protagonist.setTranslateX(protagonist.getTranslateX() - 1);
 				break;
 			case UP:
-				moveForward(protagonist);
+				protagonist.setTranslateY(protagonist.getTranslateY() - 1);
 				break;
 			case DOWN:
-				moveBackwards(protagonist);
+				protagonist.setTranslateY(protagonist.getTranslateY() + 1);
 				break;
 			case RIGHT:
-				protagonist.setTranslateX(protagonist.getTranslateX() + 10);
+				protagonist.setTranslateX(protagonist.getTranslateX() + 1);
 				break;
+				
 			case A:
-				protagonist.setRotate(protagonist.getRotate() - 10);
+				protagonist.setRotate(protagonist.getRotate() - 1);
 				break;
 			case W:
 				moveForward(protagonist);
 				break;
 			case D:
-				protagonist.setRotate(protagonist.getRotate() + 10);
+				protagonist.setRotate(protagonist.getRotate() + 1);
 				break;
 			case S:
 				moveBackwards(protagonist);
@@ -43,7 +47,7 @@ public class Controls {
 			default:
 				break;
 			}
-			physics.collisionDetection(protagonist);
+		//	physics.collisionDetection(protagonist);
 
 		});
 
@@ -83,7 +87,13 @@ public class Controls {
 	}
 
 	private void moveForward(Group agent) {
+		//////
+		double angle1 = agent.getRotate();
 
+		agent.setTranslateX(Math.cos(angle1)+agent.getTranslateX());
+        agent.setTranslateY(Math.sin(angle1)+agent.getTranslateY());
+		/////
+        /*
 		double angle = Math.toRadians(agent.getRotate());
 		System.out.println(angle);
 		double newX = Math.sin(angle) * 10;
@@ -91,7 +101,8 @@ public class Controls {
 		System.out.println(newX + " " + newY);
 		agent.setTranslateX(agent.getTranslateX() - newX);
 		agent.setTranslateY(agent.getTranslateY() - newY);
-
+*/
 	}
+	
 
 }
