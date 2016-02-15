@@ -1,23 +1,16 @@
 package application;
 
 import javafx.scene.Group;
-import javafx.scene.effect.BlurType;
-import javafx.scene.effect.DropShadow;
-import javafx.scene.effect.InnerShadow;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 public class Tank extends Vehicle {
-	AnchorPane root;
-	
-	public Tank(){
-	}
-	
-	public Group createTank(AnchorPane root){
-		Group tank = new Group();
+	Group tank;
+
+	public Tank() {
+		tank = new Group();
 		Rectangle chassi = new Rectangle(50, 80);
 		chassi.setFill(Color.DARKOLIVEGREEN);
 		chassi.setStroke(Color.BLACK);
@@ -35,27 +28,9 @@ public class Tank extends Vehicle {
 		barrel.setTranslateX(tank.getTranslateX());
 		barrel.setTranslateY(tank.getTranslateY());
 
-		// placing us in the center
-		tank.setTranslateX((root.getWidth() / 2));
-		tank.setTranslateY((root.getHeight() / 2));
-
-		InnerShadow is = new InnerShadow();
-		is.setBlurType(BlurType.ONE_PASS_BOX);
-		hatch.setEffect(is);
-
-		DropShadow ds = new DropShadow();
-		ds.setBlurType(BlurType.ONE_PASS_BOX);
-		ds.setOffsetX(3);
-		ds.setOffsetY(3);
-
-		chassi.setEffect(ds);
-		turret.setEffect(ds);
-		// barrel.setEffect(ds);
-
 		tank.getChildren().addAll(chassi, turret, hatch, barrel);
-		return tank;
+
 	}
-	
 
 	@Override
 	public double getPositionX() {
@@ -64,7 +39,8 @@ public class Tank extends Vehicle {
 
 	@Override
 	public void setPositionX(double positionX) {
-		this.setPositionX(positionX);
+		tank.setLayoutX(positionX);
+		//this.setPositionX(positionX);
 	}
 
 	@Override
@@ -74,7 +50,8 @@ public class Tank extends Vehicle {
 
 	@Override
 	public void setPositionY(double positionY) {
-		this.setPositionY(positionY);
+		tank.setLayoutY(positionY);
+		//this.setPositionY(positionY);
 	}
 
 	@Override

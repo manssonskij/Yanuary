@@ -6,7 +6,6 @@ import java.util.Random;
 
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Rectangle;
 
 public class Buildings {
@@ -14,15 +13,24 @@ public class Buildings {
 
 	public void addBuildings(Pane root) {
 
+		
 		buildingArrayList = new ArrayList<Rectangle>();
+		
 		Random rand = new Random();
-		int noBuild = rand.nextInt(10 - 2) + 2;
-		for (int i = 0; i < noBuild; i++) {
-			int randomPosY = rand.nextInt((int) root.getHeight() - 200);
-			int randomPosX = rand.nextInt((int) root.getWidth() - 200);
+		
 
-			Rectangle building = new Rectangle(randomPosY, randomPosX, rand.nextInt(200 - 100) + 100,
-					rand.nextInt(200 - 100) + 100);
+		
+		int noBuild = rand.nextInt(6 - 2) + 2;
+
+		for (int i = 0; i < noBuild; i++) {
+			// generating random position?
+			int randomPosY = rand.nextInt((int) root.getHeight());
+			int randomPosX = rand.nextInt((int) root.getWidth());
+			
+					// x,y, width, height
+			Rectangle building = new Rectangle(randomPosY, randomPosX, rand.nextInt(100 - 60) + 100,
+					rand.nextInt(100 - 60) + 100);
+			
 			building.setFill(Color.FIREBRICK);
 			building.setStroke(Color.BLACK);
 			

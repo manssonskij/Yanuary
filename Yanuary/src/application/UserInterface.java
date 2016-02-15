@@ -1,7 +1,5 @@
 package application;
 
-import javafx.scene.Group;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.paint.Color;
@@ -10,13 +8,16 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
-public class UserInterface {
 
-	void addStatusBox(AnchorPane root, Group protagonist) {
+public class UserInterface {
+	String proposix;
+	String proposiy;
+
+	void addStatusBox(AnchorPane root, Protagonist protagonist) {
 		Rectangle statusBox = new Rectangle(300, 100);
 		statusBox.setTranslateX(10);
 		statusBox.setTranslateY(10);
-		statusBox.setFill(Color.LIGHTSTEELBLUE);
+		statusBox.setFill(Color.DIMGREY);
 		statusBox.setOpacity(0.5);
 
 		Text title = new Text("в сторону Грозного");
@@ -29,10 +30,13 @@ public class UserInterface {
 				+ (Double.toString(protagonist.getTranslateY())));
 		protPosition.setX(20);
 		protPosition.setY(20);
-		DropShadow ds = new DropShadow();
-		ds.blurTypeProperty();
-		ds.setOffsetX(10);
-		statusBox.setEffect(ds);
+		
+		protPosition.setText(proposix + " "+ proposiy);
+		
+		//DropShadow ds = new DropShadow();
+		//ds.blurTypeProperty();
+		//ds.setOffsetX(10);
+		//statusBox.setEffect(ds);
 		root.getChildren().addAll(statusBox, protPosition, title);
 
 	}

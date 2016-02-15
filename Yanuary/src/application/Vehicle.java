@@ -1,6 +1,8 @@
 package application;
 
-public abstract class Vehicle {
+import javafx.scene.Group;
+
+public abstract class Vehicle extends Group {
 	double positionX;
 	double positionY;
 	double angle;

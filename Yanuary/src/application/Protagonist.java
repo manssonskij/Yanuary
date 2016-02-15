@@ -12,12 +12,16 @@ import javafx.scene.shape.Line;
 import javafx.scene.shape.Rectangle;
 
 public class Protagonist extends Tank {
+	
 	Group protagonist;
+	boolean effects = false;
+
 	public Protagonist() {
 	}
+	
+	public Protagonist(AnchorPane root){}
 
 	public Group addProtagonist(AnchorPane root) {
-
 
 		protagonist = new Group();
 
@@ -44,25 +48,9 @@ public class Protagonist extends Tank {
 		protagonist.setTranslateX((root.getWidth() / 2));
 		protagonist.setTranslateY((root.getHeight() / 2));
 
-		InnerShadow is = new InnerShadow();
-		is.setBlurType(BlurType.ONE_PASS_BOX);
-		hatch.setEffect(is);
-
-		DropShadow ds = new DropShadow();
-		ds.setBlurType(BlurType.ONE_PASS_BOX);
-		ds.setOffsetX(3);
-		ds.setOffsetY(3);
-
-		chassi.setEffect(ds);
-		turret.setEffect(ds);
-		// barrel.setEffect(ds);
-
 		protagonist.getChildren().addAll(chassi, turret, hatch, barrel);
 
 		root.getChildren().addAll(protagonist);
-
-		UserInterface ui = new UserInterface();
-		ui.addStatusBox(root, protagonist);
 
 		protagonist.requestFocus();
 		Controls controls = new Controls();
@@ -73,7 +61,8 @@ public class Protagonist extends Tank {
 			Point2D protapoint = new Point2D(protagonist.getTranslateX(), protagonist.getTranslateY());
 			Point2D turretpoint = new Point2D(turret.getCenterX(), turret.getCenterY());
 			Point2D aimingpoint = new Point2D(e.getSceneX(), e.getSceneY());
-			System.out.println(protapoint.toString() + " turret and aim " + aimingpoint.toString());
+			// System.out.println(protapoint.toString() + " turret and aim " +
+			// aimingpoint.toString());
 			barrel.setRotate(Math.toDegrees(
 					Math.atan2(protapoint.getY() - aimingpoint.getY(), protapoint.getX() - aimingpoint.getX())));
 					// double difX = e.getY() - turret.getCenterY();
@@ -99,15 +88,43 @@ public class Protagonist extends Tank {
 			// barrel.getTransforms().add(new Rotate(angle, 25, 30));
 		});
 
+		if (effects == true) {
+			addEffect(hatch, turret, chassi);
+		}
+		
+		
+		/* cache to bitmap
+		 * 
+		 */
+		protagonist.setCache(true);
+		
+		
 		return protagonist;
 	}
 
-	public double getLayoutX() {
-		return protagonist.getLayoutX();
+	/* method to add visual effects such as shadows
+	 * called if boolean "effects" is true
+	 */
+	private void addEffect(Rectangle hatch, Circle turret, Rectangle chassi) {
+		InnerShadow is = new InnerShadow();
+		is.setBlurType(BlurType.ONE_PASS_BOX);
+		hatch.setEffect(is);
 
-	}
+		DropShadow ds = new DropShadow();
+		ds.setBlurType(BlurType.ONE_PASS_BOX);
+		ds.setOffsetX(3);
+		ds.setOffsetY(3);
 
-	public double getLayoutY() {
-		return protagonist.getLayoutY();
+		chassi.setEffect(ds);
+		turret.setEffect(ds);
+		// barrel.setEffect(ds);
 	}
+	/*
+	 * 
+	 * public double getLayoutX() { return protagonist.getLayoutX();
+	 * 
+	 * }
+	 * 
+	 * public double getLayoutY() { return protagonist.getLayoutY(); }
+	 */
 }
